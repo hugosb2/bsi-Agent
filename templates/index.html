@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nátaly AI</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+<body>
+    <div class="chat-container">
+        <header>
+            <h1>Nátaly AI</h1>
+            <p>Sua assistente acadêmica virtual</p>
+        </header>
+
+        <div id="chat-box" class="chat-box">
+             <div class="message ai-message">
+                <img src="{{ url_for('static', filename='perfil.png') }}" alt="Avatar" class="avatar">
+                <div class="text">Olá! Eu sou Nátaly Ramos. Como posso te ajudar com os documentos do IF Baiano?</div>
+             </div>
+             {% if error %}
+             <div class="message error-message">
+                <div class="text">
+                    <strong>Erro no Servidor:</strong> Não foi possível carregar a base de conhecimento a partir dos arquivos PDF. Verifique os logs do servidor para mais detalhes.
+                </div>
+             </div>
+             {% endif %}
+        </div>
+
+        <div id="loading" class="loading-indicator" style="display: none;">
+            <div class="spinner"></div>
+            Nátaly está digitando...
+        </div>
+
+        <form id="message-form" class="message-form">
+            <input type="text" id="user-input" placeholder="Digite sua pergunta aqui..." autocomplete="off" required {% if error %}disabled{% endif %}>
+            <button type="submit" id="send-button" {% if error %}disabled{% endif %}>Enviar</button>
+        </form>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
