@@ -40,9 +40,35 @@ def process_pdfs_in_folder(folder_path):
     Lê todos os PDFs em uma pasta, gera embeddings e armazena em cache.
     Esta função é chamada uma vez na inicialização do servidor.
     """
-    print(f"Iniciando processamento de PDFs em: {folder_path}")
-    
+    # --- INÍCIO DO CÓDIGO DE DIAGNÓSTICO ---
+    print("\n--- INICIANDO DIAGNÓSTICO DE ACESSO A PASTA ---")
+    print(f"DEBUG: O caminho da pasta de documentos é: '{folder_path}'")
+
     try:
+        # 1. O caminho existe?
+        path_exists = os.path.exists(folder_path)
+        print(f"DEBUG: O caminho '{folder_path}' existe? {path_exists}")
+
+        # 2. Se existe, qual o conteúdo?
+        if path_exists:
+            content = os.listdir(folder_path)
+            print(f"DEBUG: Conteúdo encontrado na pasta: {content}")
+        else:
+             # Lista o conteúdo do diretório atual para vermos onde estamos
+            current_dir_content = os.listdir(os.path.dirname(os.path.abspath(__file__)))
+            print(f"DEBUG: A pasta não foi encontrada! Conteúdo do diretório do script: {current_dir_content}")
+
+    except Exception as e:
+        print(f"DEBUG: Ocorreu um erro ao tentar listar o diretório: {e}")
+
+    print("--- FIM DO DIAGNÓSTICO ---\n")
+    # --- FIM DO CÓDIGO DE DIAGNÓSTICO ---
+
+
+    print(f"Iniciando processamento de PDFs em: {folder_path}")
+
+    try:
+        # O resto da sua função continua aqui...
         pdf_files = glob.glob(os.path.join(folder_path, "*.pdf"))
         if not pdf_files:
             print(f"Nenhum arquivo PDF encontrado em '{folder_path}'.")
