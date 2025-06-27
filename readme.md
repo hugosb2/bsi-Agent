@@ -1,6 +1,6 @@
 # Nátaly AI - Agente de Orientação para BSI
 
-Um chatbot inteligente, baseado no modelo Gemini do Google, especializado em responder perguntas sobre o curso de Bacharelado em Sistemas de Informação do IF Baiano - Campus Guanambi.
+Um chatbot inteligente, baseado no modelo Gemini do Google, especializado em responder perguntas sobre o curso de Bacharelado em Sistemas de Informação do IF Baiano - Campus Itapetinga.
 
 ![Screenshot da Interface do Chatbot](./screenshoots/1.png) 
 ---
