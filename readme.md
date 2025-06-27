@@ -124,6 +124,6 @@ Este projeto está configurado para deploy contínuo no Render.
 
 ## 👤 Autor
 
--   **[Hugo Barros]**
+-   **HUGO BARROS**
 -   **GitHub:** [@hugosb2](https://github.com/hugosb2)
 -   **LinkedIn:** [Hugo Barros](https://www.linkedin.com/in/hugo-barros-7b764b217/)
