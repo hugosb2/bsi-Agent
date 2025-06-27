@@ -11,7 +11,7 @@ app = Flask(__name__)
 
 API_KEY = os.getenv("GOOGLE_API_KEY")
 EMBEDDING_MODEL = "text-embedding-004"
-GENERATIVE_MODEL = "gemini-1.5-flash"
+GENERATIVE_MODEL = "gemini-2.5-flash"
 API_BASE_URL = "https://generativelanguage.googleapis.com/v1beta/models"
 
 if not API_KEY:
