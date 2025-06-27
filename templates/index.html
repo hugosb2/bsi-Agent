@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nátaly AI</title>
+    <title>Nátaly AI - BSI</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 </head>
@@ -11,13 +11,13 @@
     <div class="chat-container">
         <header>
             <h1>Nátaly AI</h1>
-            <p>Sua assistente acadêmica virtual</p>
+            <p>Sua assistente para o curso de Sistemas de Informação</p>
         </header>
 
         <div id="chat-box" class="chat-box">
              <div class="message ai-message">
                 <img src="{{ url_for('static', filename='perfil.png') }}" alt="Avatar" class="avatar">
-                <div class="text">Olá! Eu sou Nátaly Ramos, sua assistente acadêmica virtual. Como posso ajudar hoje?</div>
+                <div class="text">Olá! Sou Nátaly Ramos, sua agente de orientação virtual para o curso de **Sistemas de Informação**. Como posso te ajudar hoje?</div>
              </div>
              {% if error %}
              <div class="message error-message">
@@ -34,7 +34,7 @@
         </div>
 
         <form id="message-form" class="message-form">
-            <input type="text" id="user-input" placeholder="Digite sua pergunta aqui..." autocomplete="off" required {% if error %}disabled{% endif %}>
+            <input type="text" id="user-input" placeholder="Pergunte sobre o curso de BSI..." autocomplete="off" required {% if error %}disabled{% endif %}>
             <button type="submit" id="send-button" {% if error %}disabled{% endif %}>Enviar</button>
         </form>
     </div>
