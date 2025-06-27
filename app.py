@@ -1,4 +1,3 @@
-# app.py
 import os
 import pypdf
 import numpy as np
@@ -9,21 +8,24 @@ import time
 import glob
 from flask import Flask, render_template, request, jsonify
 
-# --- 1. CONFIGURAÇÃO INICIAL ---
 load_dotenv()
+
 script_dir = os.path.dirname(os.path.abspath(__file__))
 PDF_FOLDER_NAME = "documentos"
 PDF_FOLDER_PATH = os.path.join(script_dir, PDF_FOLDER_NAME)
+
 API_KEY = os.getenv("GOOGLE_API_KEY")
 EMBEDDING_MODEL = "text-embedding-004"
-GENERATIVE_MODEL = "gemini-2.5-flash"
+GENERATIVE_MODEL = "gemini-1.5-flash"
 API_BASE_URL = "https://generativelanguage.googleapis.com/v1beta/models"
+
 if not API_KEY:
     raise ValueError("A chave da API do Google não foi encontrada.")
+
 app = Flask(__name__)
+
 pdf_data_cache = None
 
-# --- 2. LÓGICA DE PROCESSAMENTO ---
 def process_pdfs_in_folder(folder_path):
     print(f"Iniciando processamento de PDFs em: {folder_path}")
     try:
@@ -34,6 +36,7 @@ def process_pdfs_in_folder(folder_path):
     except Exception as e:
         print(f"ERRO ao acessar o diretório de documentos: {folder_path} | Erro: {e}")
         return None
+
     all_chunks = []
     for pdf_file_path in pdf_files:
         try:
@@ -48,9 +51,11 @@ def process_pdfs_in_folder(folder_path):
         except Exception as e:
             print(f"Erro ao ler o arquivo {filename}: {e}")
             continue
+
     if not all_chunks:
         print("Nenhum texto pôde ser extraído dos arquivos PDF.")
         return None
+
     print(f"Total de {len(all_chunks)} páginas extraídas. Gerando embeddings...")
     all_embeddings = []
     batch_size = 90
@@ -70,6 +75,7 @@ def process_pdfs_in_folder(folder_path):
         except requests.exceptions.RequestException as e:
             print(f"ERRO DE API! Não foi possível gerar embeddings. Erro: {e}")
             return None
+
     print("Embeddings gerados com sucesso.")
     return [{"text": chunk['text'], "source": chunk['source'], "embedding": np.array(embedding)} for chunk, embedding in zip(all_chunks, all_embeddings)]
 
@@ -90,7 +96,6 @@ def find_best_chunks(query, pdf_data, top_k=5):
         print(f"Erro ao gerar embedding para a pergunta: {e}")
         return []
 
-# --- 3. ROTAS FLASK ---
 @app.route("/")
 def index():
     if pdf_data_cache is None:
@@ -109,7 +114,6 @@ def ask():
         relevant_chunks = find_best_chunks(query, pdf_data_cache)
         context = "\n\n---\n\n".join([f"Fonte sutil: {chunk['source']}\nConteúdo: {chunk['text']}" for chunk in relevant_chunks])
         
-        # --- ALTERAÇÃO PRINCIPAL AQUI ---
         prompt = f"""
 # Persona e Objetivo
 Você é Nátaly Ramos, a Agente de Orientação Acadêmica virtual do IF Baiano. Você tem acesso a toda a base de conhecimento acadêmico do instituto. Sua comunicação deve ser sempre clara, acolhedora e humanizada, como se estivesse consultando suas próprias anotações e conhecimentos.
@@ -125,7 +129,6 @@ Contexto fornecido:\n---\n{context}\n---\n\nPergunta do usuário:\n{query}
 
 Resposta:
 """
-        # --- FIM DA ALTERAÇÃO ---
 
         url = f"{API_BASE_URL}/{GENERATIVE_MODEL}:generateContent?key={API_KEY}"
         headers = {'Content-Type': 'application/json'}
@@ -146,9 +149,7 @@ Resposta:
         print(f"Erro inesperado: {e}")
         return jsonify({"error": f"Ocorreu um erro inesperado no servidor: {e}"}), 500
 
-# --- INICIALIZAÇÃO DA BASE DE CONHECIMENTO ---
 pdf_data_cache = process_pdfs_in_folder(PDF_FOLDER_PATH)
 
-# --- BLOCO PARA DESENVOLVIMENTO LOCAL ---
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5001, debug=True)
