@@ -17,12 +17,12 @@
         <div id="chat-box" class="chat-box">
              <div class="message ai-message">
                 <img src="{{ url_for('static', filename='perfil.png') }}" alt="Avatar" class="avatar">
-                <div class="text">Olá! Eu sou Nátaly Ramos. Como posso te ajudar com os documentos do IF Baiano?</div>
+                <div class="text">Olá! Eu sou Nátaly Ramos, sua assistente acadêmica virtual. Como posso ajudar hoje?</div>
              </div>
              {% if error %}
              <div class="message error-message">
                 <div class="text">
-                    <strong>Erro no Servidor:</strong> Não foi possível carregar a base de conhecimento a partir dos arquivos PDF. Verifique os logs do servidor para mais detalhes.
+                    <strong>Erro no Servidor:</strong> Não foi possível carregar a base de conhecimento.
                 </div>
              </div>
              {% endif %}
