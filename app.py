@@ -193,16 +193,4 @@ Resposta:
 
 # --- INICIALIZAÇÃO ---
 if __name__ == "__main__":
-    # Processa os PDFs uma vez quando o servidor inicia
-    pdf_data_cache = process_pdfs_in_folder(PDF_FOLDER_PATH)
-    
-    if pdf_data_cache:
-        print("\nBase de conhecimento carregada. Servidor Flask pronto para iniciar.")
-    else:
-        print("\nAVISO: Base de conhecimento não foi carregada. O chatbot pode não funcionar.")
-
-    # Para desenvolvimento:
-    app.run(debug=True, port=5001)
-    
-    # Para produção, use um servidor WSGI como o Gunicorn:
-    # gunicorn --workers 4 --bind 0.0.0.0:5001 app:app
+    app.run(host='0.0.0.0', port=5001, debug=True)
