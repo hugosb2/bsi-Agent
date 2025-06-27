@@ -217,6 +217,13 @@ Resposta:
         print(f"Erro inesperado: {e}")
         return jsonify({"error": f"Ocorreu um erro inesperado no servidor: {e}"}), 500
 
-# --- INICIALIZAÇÃO ---
+# --- PONTO MAIS IMPORTANTE: INICIALIZAÇÃO DA BASE DE CONHECIMENTO ---
+# Esta linha chama a função de processamento assim que o servidor é iniciado.
+# É executada pelo Gunicorn no Render antes de aceitar requisições.
+pdf_data_cache = process_pdfs_in_folder(PDF_FOLDER_PATH)
+
+
+# --- BLOCO PARA DESENVOLVIMENTO LOCAL ---
 if __name__ == "__main__":
+    # Este bloco é ignorado pelo Gunicorn e só roda com `python app.py`
     app.run(host='0.0.0.0', port=5001, debug=True)
