@@ -2,7 +2,7 @@
 
 Um chatbot inteligente, baseado no modelo Gemini do Google, especializado em responder perguntas sobre o curso de Bacharelado em Sistemas de Informação do IF Baiano - Campus Guanambi.
 
-![Screenshot da Interface do Chatbot](./assets/screenshots/1.png) 
+![Screenshot da Interface do Chatbot](./assets\screenshots/1.png) 
 ---
 
 ## 📖 Sobre o Projeto
