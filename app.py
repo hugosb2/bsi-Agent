@@ -1,18 +1,13 @@
 import os
-import pypdf
 import numpy as np
 import requests
 import json
 from dotenv import load_dotenv
-import time
-import glob
 from flask import Flask, render_template, request, jsonify
 
 load_dotenv()
 
-script_dir = os.path.dirname(os.path.abspath(__file__))
-PDF_FOLDER_NAME = "documentos"
-PDF_FOLDER_PATH = os.path.join(script_dir, PDF_FOLDER_NAME)
+app = Flask(__name__)
 
 API_KEY = os.getenv("GOOGLE_API_KEY")
 EMBEDDING_MODEL = "text-embedding-004"
@@ -22,62 +17,25 @@ API_BASE_URL = "https://generativelanguage.googleapis.com/v1beta/models"
 if not API_KEY:
     raise ValueError("A chave da API do Google não foi encontrada.")
 
-app = Flask(__name__)
-
 pdf_data_cache = None
 
-def process_pdfs_in_folder(folder_path):
-    print(f"Iniciando processamento de PDFs em: {folder_path}")
+def load_knowledge_base():
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    json_path = os.path.join(script_dir, "knowledge_base.json")
     try:
-        pdf_files = glob.glob(os.path.join(folder_path, "*.pdf"))
-        if not pdf_files:
-            print(f"Nenhum arquivo PDF encontrado em '{folder_path}'.")
-            return None
+        print(f"Carregando base de conhecimento de: {json_path}")
+        with open(json_path, 'r', encoding='utf-8') as f:
+            data = json.load(f)
+        for item in data:
+            item['embedding'] = np.array(item['embedding'])
+        print("Base de conhecimento carregada com sucesso.")
+        return data
+    except FileNotFoundError:
+        print(f"ERRO CRÍTICO: Arquivo 'knowledge_base.json' não encontrado.")
+        return None
     except Exception as e:
-        print(f"ERRO ao acessar o diretório de documentos: {folder_path} | Erro: {e}")
+        print(f"ERRO ao carregar ou processar 'knowledge_base.json': {e}")
         return None
-
-    all_chunks = []
-    for pdf_file_path in pdf_files:
-        try:
-            filename = os.path.basename(pdf_file_path)
-            print(f"Processando: {filename}")
-            reader = pypdf.PdfReader(pdf_file_path)
-            for page_num, page in enumerate(reader.pages):
-                text = page.extract_text()
-                if text and text.strip():
-                    source_info = f"na lista de docentes do curso (página {page_num + 1})" if "docentes" in filename.lower() else f"no projeto pedagógico do curso (página {page_num + 1})"
-                    all_chunks.append({"text": text, "source": source_info})
-        except Exception as e:
-            print(f"Erro ao ler o arquivo {filename}: {e}")
-            continue
-
-    if not all_chunks:
-        print("Nenhum texto pôde ser extraído dos arquivos PDF.")
-        return None
-
-    print(f"Total de {len(all_chunks)} páginas extraídas. Gerando embeddings...")
-    all_embeddings = []
-    batch_size = 90
-    for i in range(0, len(all_chunks), batch_size):
-        batch_of_chunks = all_chunks[i:i + batch_size]
-        texts_to_embed = [chunk['text'] for chunk in batch_of_chunks]
-        print(f"  - Processando lote de {len(batch_of_chunks)} chunks...")
-        url = f"{API_BASE_URL}/{EMBEDDING_MODEL}:batchEmbedContents?key={API_KEY}"
-        headers = {'Content-Type': 'application/json'}
-        requests_payload = {"requests": [{"model": f"models/{EMBEDDING_MODEL}", "content": {"parts": [{"text": text}]}, "task_type": "RETRIEVAL_DOCUMENT"} for text in texts_to_embed]}
-        try:
-            response = requests.post(url, headers=headers, data=json.dumps(requests_payload))
-            response.raise_for_status()
-            batch_embeddings = [item['values'] for item in response.json()['embeddings']]
-            all_embeddings.extend(batch_embeddings)
-            time.sleep(1)
-        except requests.exceptions.RequestException as e:
-            print(f"ERRO DE API! Não foi possível gerar embeddings. Erro: {e}")
-            return None
-
-    print("Embeddings gerados com sucesso.")
-    return [{"text": chunk['text'], "source": chunk['source'], "embedding": np.array(embedding)} for chunk, embedding in zip(all_chunks, all_embeddings)]
 
 def find_best_chunks(query, pdf_data, top_k=5):
     if not pdf_data: return []
@@ -129,7 +87,6 @@ Contexto fornecido:\n---\n{context}\n---\n\nPergunta do usuário:\n{query}
 
 Resposta:
 """
-
         url = f"{API_BASE_URL}/{GENERATIVE_MODEL}:generateContent?key={API_KEY}"
         headers = {'Content-Type': 'application/json'}
         payload = {"contents": [{"parts": [{"text": prompt}]}]}
@@ -138,18 +95,11 @@ Resposta:
         result = response.json()
         ai_response = result['candidates'][0]['content']['parts'][0]['text']
         return jsonify({"response": ai_response})
-
-    except requests.exceptions.RequestException as err:
-        print(f"Erro de API Generativa: {err}")
-        return jsonify({"error": f"Ocorreu um erro ao comunicar com a IA: {err}"}), 500
-    except (KeyError, IndexError) as err:
-        print(f"Erro ao processar resposta da IA: {err}\n{result}")
-        return jsonify({"error": "Erro ao processar a resposta da IA."}), 500
     except Exception as e:
         print(f"Erro inesperado: {e}")
         return jsonify({"error": f"Ocorreu um erro inesperado no servidor: {e}"}), 500
 
-pdf_data_cache = process_pdfs_in_folder(PDF_FOLDER_PATH)
+pdf_data_cache = load_knowledge_base()
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5001, debug=True)
