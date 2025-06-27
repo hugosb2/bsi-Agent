@@ -2,9 +2,7 @@
 
 Um chatbot inteligente, baseado no modelo Gemini do Google, especializado em responder perguntas sobre o curso de Bacharelado em Sistemas de Informação do IF Baiano - Campus Guanambi.
 
-![Screenshot da Interface do Chatbot](httpss://i.imgur.com/image.png) 
-*(Substitua este link pelo link da sua própria screenshot)*
-
+![Screenshot da Interface do Chatbot](./assets/screenshots/1.png) 
 ---
 
 ## 📖 Sobre o Projeto
@@ -54,7 +52,7 @@ Siga os passos abaixo para configurar e executar o projeto em seu ambiente local
 
 1.  **Clone o Repositório**
     ```bash
-    git clone [https://github.com/seu-usuario/seu-repositorio.git](https://github.com/seu-usuario/seu-repositorio.git)
+    git clone [https://github.com/hugosb2/bsi-Agent.git](https://github.com/hugosb2/bsi-Agent.git)
     cd seu-repositorio
     ```
 
