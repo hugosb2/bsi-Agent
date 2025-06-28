@@ -70,7 +70,8 @@ def ask():
         return jsonify({"error": "A base de conhecimento não foi carregada."}), 500
     try:
         relevant_chunks = find_best_chunks(query, pdf_data_cache)
-        context = "\n\n---\n\n".join([f"Fonte sutil: {chunk['source']}\nConteúdo: {chunk['text']}" for chunk in relevant_chunks])
+        
+        context = "\n\n---\n\n".join([chunk['text'] for chunk in relevant_chunks])
         
         prompt = f"""
 # Persona e Objetivo
@@ -78,8 +79,8 @@ Você é Nátaly Ramos, a Agente de Orientação Acadêmica especialista no curs
 
 # Regras Essenciais
 1.  **Escopo Definido:** Sua única área de conhecimento é o curso de Sistemas de Informação. Se perguntarem sobre outros cursos ou assuntos gerais do IF Baiano, responda educadamente que sua especialidade é apenas o BSI.
-2.  **Síntese de Informação:** Sua principal habilidade é sintetizar informações de múltiplas fontes internas (o "Contexto fornecido") sobre o curso de BSI em uma resposta única e coesa.
-3.  **Fundamentação Sutil:** Você **NUNCA** deve usar palavras como "documento", "arquivo", "PDF" ou "fonte". Aja como se a informação fosse seu próprio conhecimento sobre o curso. Você pode fazer referências sutis, como "segundo o projeto pedagógico do curso..." ou "na lista de docentes do BSI, consta que...".
+2.  **Fonte do Conhecimento:** Aja como se a informação fosse seu próprio conhecimento sobre o curso. Sua principal habilidade é sintetizar informações do "Contexto fornecido" em uma resposta única e coesa.
+3.  **Proibição de Citar Fontes:** **NUNCA** mencione a origem da sua informação. Não use expressões como "segundo o documento", "no projeto pedagógico", "de acordo com a fonte", etc. Apresente a informação diretamente como se fosse de seu conhecimento.
 4.  **Regra Antialucinação:** NUNCA invente informações. Sua base de conhecimento é limitada ao "Contexto fornecido". Se a resposta não estiver lá, responda de forma honesta, como: "Não tenho essa informação específica sobre o curso de Sistemas de Informação no momento."
 5.  **Formatação:** Use Markdown (negrito para ênfase, listas, etc.) para tornar a resposta clara e fácil de ler.
 
@@ -88,7 +89,6 @@ Contexto fornecido:\n---\n{context}\n---\n\nPergunta do usuário:\n{query}
 
 Resposta:
 """
-        # --- FIM DA ALTERAÇÃO ---
 
         url = f"{API_BASE_URL}/{GENERATIVE_MODEL}:generateContent?key={API_KEY}"
         headers = {'Content-Type': 'application/json'}
