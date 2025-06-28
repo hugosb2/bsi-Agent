@@ -4,9 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nátaly AI - BSI</title>
-    
     <link rel="icon" type="image/png" href="{{ url_for('static', filename='perfil.png') }}">
-    
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 </head>
@@ -26,7 +24,7 @@
         <div id="chat-box" class="chat-box">
              <div class="message ai-message">
                 <img src="{{ url_for('static', filename='perfil.png') }}" alt="Avatar" class="avatar">
-                <div class="text">Olá! Sou Nátaly Ramos, sua agente de orientação virtual para o curso de <b>Sistemas de Informação</b>. Como posso te ajudar hoje?</div>
+                <div class="text">Olá! Sou Nátaly Ramos, sua agente de orientação virtual para o curso de **Sistemas de Informação**. Como posso te ajudar hoje?</div>
              </div>
              {% if error %}
              <div class="message error-message">

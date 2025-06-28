@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // --- INÍCIO DA LÓGICA DE TROCA DE TEMA ---
     const themeToggle = document.getElementById('theme-toggle');
     const lightIcon = document.getElementById('theme-icon-light');
     const darkIcon = document.getElementById('theme-icon-dark');
@@ -25,7 +26,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
         applyTheme(newTheme);
     });
+    // --- FIM DA LÓGICA DE TROCA DE TEMA ---
 
+
+    // --- Código do Chatbot ---
     const form = document.getElementById('message-form');
     const userInput = document.getElementById('user-input');
     const chatBox = document.getElementById('chat-box');
