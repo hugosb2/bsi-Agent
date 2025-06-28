@@ -5,13 +5,13 @@
 
     --background-color-light: #f0f2f5;
     --surface-color-light: #ffffff;
-    --primary-text-color-light: #e0e0e0;
+    --primary-text-color-light: #1c1e21;
     --secondary-text-color-light: #65676b;
     --user-msg-bg-light: blue;
     --ai-msg-bg-light: #e4e6eb;
     --input-bg-light: #e4e6eb;
     --border-color-light: rgba(0, 0, 0, 0.1);
-    --user-msg-text-light: #050505;
+    --user-msg-text-light: #e0e0e0;
     --ai-msg-text-light: #050505;
 
 
