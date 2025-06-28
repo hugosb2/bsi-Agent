@@ -1,5 +1,4 @@
 :root {
-    /* --- Light Theme Colors --- */
     --background-color-light: #f0f2f5;
     --surface-color-light: #ffffff;
     --primary-text-color-light: #1c1e21;
@@ -8,11 +7,10 @@
     --ai-msg-bg-light: #e4e6eb;
     --input-bg-light: #e4e6eb;
     --border-color-light: rgba(0, 0, 0, 0.1);
-    --msg-text-light: #ffffff; /* For user messages */
-    --ai-msg-text-light: #050505; /* For AI messages */
+    --msg-text-light: #ffffff; 
+    --ai-msg-text-light: #050505;
 
 
-    /* --- Dark Theme Colors --- */
     --background-color-dark: #121212;
     --surface-color-dark: #1e1e1e;
     --primary-text-color-dark: #e0e0e0;
@@ -22,14 +20,12 @@
     --input-bg-dark: #2a2a2a;
     --border-color-dark: rgba(255, 255, 255, 0.1);
 
-    /* --- Universal Colors --- */
     --accent-color: #4CAF50;
     --accent-hover-color: #45a049;
     --error-msg-bg: #8c1c1c;
     --text-on-accent: #ffffff;
 }
 
-/* Default to light theme variables */
 :root {
     --bg-color: var(--background-color-light);
     --surface-color: var(--surface-color-light);
@@ -43,7 +39,6 @@
     --ai-msg-text: var(--ai-msg-text-light);
 }
 
-/* Override with dark theme variables when data-theme is 'dark' */
 [data-theme="dark"] {
     --bg-color: var(--background-color-dark);
     --surface-color: var(--surface-color-dark);
@@ -57,7 +52,6 @@
     --ai-msg-text: var(--primary-text-color-dark);
 }
 
-/* --- ALTERAÇÃO 1: Ajuste na base do layout --- */
 html {
     height: 100%;
 }
@@ -70,15 +64,15 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100%; /* Alterado de 100vh para 100% */
-    overflow: hidden; /* Previne rolagem do corpo da página */
+    height: 100%;
+    overflow: hidden;
     transition: background-color 0.3s, color 0.3s;
 }
 
 .chat-container {
     width: 100%;
     max-width: 800px;
-    height: 90vh; /* Mantido para desktop */
+    height: 90vh;
     background-color: var(--surface-color);
     border-radius: 12px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
@@ -96,13 +90,13 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    flex-shrink: 0; /* Impede que o header encolha */
+    flex-shrink: 0;
 }
 
 .header-title {
     flex-grow: 1;
     text-align: center;
-    margin-left: 40px; /* Space for the button */
+    margin-left: 40px;
 }
 
 header h1 { margin: 0; font-size: 1.5rem; }
@@ -120,7 +114,7 @@ header p { margin: 5px 0 0; color: var(--secondary-text); font-size: 0.9rem; }
     justify-content: center;
     color: var(--primary-text);
     transition: background-color 0.2s, border-color 0.2s;
-    flex-shrink: 0; /* Impede que o botão encolha */
+    flex-shrink: 0;
 }
 
 #theme-toggle:hover {
@@ -169,17 +163,16 @@ header p { margin: 5px 0 0; color: var(--secondary-text); font-size: 0.9rem; }
 #send-button:hover:not(:disabled) { background-color: var(--accent-hover-color); }
 #send-button:disabled { background-color: #555; cursor: not-allowed; }
 
-/* --- ALTERAÇÃO 2: Ajuste específico para Mobile --- */
 @media (max-width: 768px) {
     .chat-container {
-        height: 100%; /* Ocupa 100% da altura do body */
+        height: 100%;
         max-height: 100%;
         border-radius: 0;
         box-shadow: none;
     }
 
     header { padding: 15px; }
-    .header-title { margin-left: 42px; } /* Adjust for smaller button */
+    .header-title { margin-left: 42px; }
     header h1 { font-size: 1.2rem; }
     header p { font-size: 0.8rem; }
     #theme-toggle { width: 38px; height: 38px; }
