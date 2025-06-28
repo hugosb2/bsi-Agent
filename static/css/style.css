@@ -7,6 +7,7 @@
     --user-msg-bg: #2c3e50;
     --ai-msg-bg: #34495e;
     --error-msg-bg: #8c1c1c;
+    --border-color: rgba(255, 255, 255, 0.1);
 }
 
 body {
@@ -35,12 +36,20 @@ body {
 header {
     padding: 20px;
     background-color: rgba(0,0,0,0.2);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid var(--border-color);
     text-align: center;
 }
 
-header h1 { margin: 0; }
-header p { margin: 5px 0 0; color: var(--secondary-text-color); }
+header h1 {
+    margin: 0;
+    font-size: 1.5rem;
+}
+
+header p {
+    margin: 5px 0 0;
+    color: var(--secondary-text-color);
+    font-size: 0.9rem;
+}
 
 .chat-box {
     flex-grow: 1;
@@ -58,25 +67,52 @@ header p { margin: 5px 0 0; color: var(--secondary-text-color); }
     max-width: 85%;
     line-height: 1.6;
 }
+
 .message .text {
     padding: 12px 16px;
     border-radius: 18px;
     color: white;
 }
-.message .text a { color: var(--accent-color); }
-.message .text strong { color: #f1c40f; }
-.message .text pre { background-color: #000; padding: 10px; border-radius: 8px; overflow-x: auto; }
+
+.message .text a {
+    color: var(--accent-color);
+    text-decoration: none;
+}
+.message .text a:hover {
+    text-decoration: underline;
+}
+
+.message .text strong {
+    color: #f1c40f;
+}
+
+.message .text pre {
+    background-color: #000;
+    padding: 10px;
+    border-radius: 8px;
+    overflow-x: auto;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
 
 .user-message {
     align-self: flex-end;
     flex-direction: row-reverse;
 }
-.user-message .text { background-color: var(--user-msg-bg); border-bottom-right-radius: 4px; }
+
+.user-message .text {
+    background-color: var(--user-msg-bg);
+    border-bottom-right-radius: 4px;
+}
 
 .ai-message {
     align-self: flex-start;
 }
-.ai-message .text { background-color: var(--ai-msg-bg); border-bottom-left-radius: 4px; }
+
+.ai-message .text {
+    background-color: var(--ai-msg-bg);
+    border-bottom-left-radius: 4px;
+}
 
 .error-message .text {
     background-color: var(--error-msg-bg);
@@ -90,6 +126,7 @@ header p { margin: 5px 0 0; color: var(--secondary-text-color); }
     border-radius: 50%;
     background-color: #4b5563;
     object-fit: cover;
+    flex-shrink: 0;
 }
 
 .loading-indicator {
@@ -100,21 +137,27 @@ header p { margin: 5px 0 0; color: var(--secondary-text-color); }
     font-style: italic;
     color: var(--secondary-text-color);
 }
+
 .spinner {
-    width: 20px; height: 20px;
+    width: 20px;
+    height: 20px;
     border: 3px solid rgba(255, 255, 255, 0.3);
     border-top-color: var(--accent-color);
     border-radius: 50%;
     animation: spin 1s linear infinite;
 }
-@keyframes spin { to { transform: rotate(360deg); } }
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
 
 .message-form {
     display: flex;
     padding: 20px;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    border-top: 1px solid var(--border-color);
     gap: 10px;
 }
+
 #user-input {
     flex-grow: 1;
     padding: 12px;
@@ -123,10 +166,18 @@ header p { margin: 5px 0 0; color: var(--secondary-text-color); }
     background-color: #2a2a2a;
     color: var(--primary-text-color);
     font-size: 1rem;
+    transition: border-color 0.2s;
 }
-#user-input:focus { outline: none; border-color: var(--accent-color); }
+
+#user-input:focus {
+    outline: none;
+    border-color: var(--accent-color);
+}
+
 #send-button {
-    padding: 12px 20px;
+    padding: 12px;
+    width: 48px;
+    height: 48px;
     border-radius: 8px;
     border: none;
     background-color: var(--accent-color);
@@ -134,6 +185,67 @@ header p { margin: 5px 0 0; color: var(--secondary-text-color); }
     font-weight: bold;
     cursor: pointer;
     transition: background-color 0.2s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
-#send-button:hover:not(:disabled) { background-color: #45a049; }
-#send-button:disabled { background-color: #555; cursor: not-allowed; }
+
+#send-button svg {
+    width: 24px;
+    height: 24px;
+    fill: white;
+}
+
+#send-button:hover:not(:disabled) {
+    background-color: #45a049;
+}
+
+#send-button:disabled {
+    background-color: #555;
+    cursor: not-allowed;
+}
+
+/* --- Responsive Design for Mobile --- */
+@media (max-width: 768px) {
+    body {
+        height: 100%;
+    }
+
+    .chat-container {
+        height: 100vh;
+        max-height: 100vh;
+        border-radius: 0;
+        box-shadow: none;
+    }
+
+    header {
+        padding: 15px;
+    }
+
+    header h1 {
+        font-size: 1.2rem;
+    }
+
+    header p {
+        font-size: 0.8rem;
+    }
+
+    .chat-box {
+        padding: 15px;
+    }
+
+    .message-form {
+        padding: 15px;
+    }
+
+    #user-input {
+        padding: 10px;
+        font-size: 0.9rem;
+    }
+
+    #send-button {
+        width: 42px;
+        height: 42px;
+        padding: 10px;
+    }
+}

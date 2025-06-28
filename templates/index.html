@@ -35,7 +35,11 @@
 
         <form id="message-form" class="message-form">
             <input type="text" id="user-input" placeholder="Pergunte sobre o curso de BSI..." autocomplete="off" required {% if error %}disabled{% endif %}>
-            <button type="submit" id="send-button" {% if error %}disabled{% endif %}>Enviar</button>
+            <button type="submit" id="send-button" title="Enviar" {% if error %}disabled{% endif %}>
+                <svg viewBox="0 0 24 24">
+                    <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"></path>
+                </svg>
+            </button>
         </form>
     </div>
 
