@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR" data-theme="dark">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,14 +10,20 @@
 <body>
     <div class="chat-container">
         <header>
-            <h1>Nátaly AI</h1>
-            <p>Sua assistente para o curso de Sistemas de Informação</p>
+            <div class="header-title">
+                <h1>Nátaly AI</h1>
+                <p>Sua assistente para o curso de Sistemas de Informação</p>
+            </div>
+            <button id="theme-toggle" title="Alterar tema">
+                <svg id="theme-icon-light" class="icon" viewBox="0 0 24 24" style="display:none;"><path d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zM2 13h2c.55 0 1-.45 1-1s-.45-1-1-1H2c-.55 0-1 .45-1 1s.45 1 1 1zm18 0h2c.55 0 1-.45 1-1s-.45-1-1-1h-2c-.55 0-1 .45-1 1s.45 1 1 1zm-9-7c.55 0 1-.45 1-1V3c0-.55-.45-1-1-1s-1 .45-1 1v2c0 .55.45 1 1 1zm0 12c.55 0 1-.45 1-1v-2c0-.55-.45-1-1-1s-1 .45-1 1v2c0 .55.45 1 1 1zM5.64 7.05c.39-.39 1.02-.39 1.41 0 .39.39.39 1.02 0 1.41L5.64 9.87c-.39.39-1.02.39-1.41 0-.39-.39-.39-1.02 0-1.41l1.41-1.41zm12.72 12.72c.39-.39 1.02-.39 1.41 0 .39.39.39 1.02 0 1.41l-1.41 1.41c-.39.39-1.02.39-1.41 0-.39-.39-.39-1.02 0-1.41l1.41-1.41zM5.64 16.95l1.41-1.41c.39-.39.39-1.02 0-1.41-.39-.39-1.02-.39-1.41 0l-1.41 1.41c-.39.39-.39 1.02 0 1.41.39.39 1.02.39 1.41 0zm12.72-12.72l1.41-1.41c.39-.39.39-1.02 0-1.41-.39-.39-1.02-.39-1.41 0l-1.41 1.41c-.39.39-.39 1.02 0 1.41.39.39 1.02.39 1.41 0z"></path></svg>
+                <svg id="theme-icon-dark" class="icon" viewBox="0 0 24 24" style="display:none;"><path d="M9.37 5.51C9.19 6.15 9 6.82 9 7.5c0 4.42 3.58 8 8 8 .68 0 1.35-.19 1.99-.53C16.84 18.23 13.62 21 10 21c-4.97 0-9-4.03-9-9 0-3.62 2.77-6.84 6.37-8.49z"></path></svg>
+            </button>
         </header>
 
         <div id="chat-box" class="chat-box">
              <div class="message ai-message">
                 <img src="{{ url_for('static', filename='perfil.png') }}" alt="Avatar" class="avatar">
-                <div class="text">Olá! Sou Nátaly Ramos, sua agente de orientação virtual para o curso de **Sistemas de Informação**. Como posso te ajudar hoje?</div>
+                <div class="text">Olá! Sou Nátaly Ramos, sua agente de orientação virtual para o curso de <b>Sistemas de Informação</b>. Como posso te ajudar hoje?</div>
              </div>
              {% if error %}
              <div class="message error-message">
