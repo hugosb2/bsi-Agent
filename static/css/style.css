@@ -1,25 +1,22 @@
 :root {
-    --accent-color: blue;
-    --accent-hover-color: blue;
+    --accent-color: #0d6efd;
+    --accent-hover-color: #0b5ed7;
     --text-on-accent: #ffffff;
-
     --background-color-light: #f0f2f5;
     --surface-color-light: #ffffff;
     --primary-text-color-light: #1c1e21;
     --secondary-text-color-light: #65676b;
-    --user-msg-bg-light: blue;
+    --user-msg-bg-light: #cfe2ff;
     --ai-msg-bg-light: #e4e6eb;
     --input-bg-light: #e4e6eb;
     --border-color-light: rgba(0, 0, 0, 0.1);
-    --user-msg-text-light: #e0e0e0;
+    --user-msg-text-light: #052859;
     --ai-msg-text-light: #050505;
-
-
     --background-color-dark: #121212;
     --surface-color-dark: #1e1e1e;
     --primary-text-color-dark: #e0e0e0;
     --secondary-text-color-dark: #b0b0b0;
-    --user-msg-bg-dark: blue;
+    --user-msg-bg-dark: #213b5a;
     --ai-msg-bg-dark: #34495e;
     --input-bg-dark: #2a2a2a;
     --border-color-dark: rgba(255, 255, 255, 0.1);
@@ -40,7 +37,7 @@
     --ai-msg-text: var(--ai-msg-text-light);
 }
 
-body.dark-theme, [data-theme="dark"] {
+[data-theme="dark"] {
     --bg-color: var(--background-color-dark);
     --surface-color: var(--surface-color-dark);
     --primary-text: var(--primary-text-color-dark);
@@ -97,7 +94,7 @@ header {
 .header-title {
     flex-grow: 1;
     text-align: center;
-    margin-left: 40px; /* Space for the button */
+    margin-left: 40px;
 }
 
 header h1 { margin: 0; font-size: 1.5rem; }
