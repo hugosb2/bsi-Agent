@@ -1,4 +1,5 @@
 :root {
+    /* --- Light Theme Colors --- */
     --background-color-light: #f0f2f5;
     --surface-color-light: #ffffff;
     --primary-text-color-light: #1c1e21;
@@ -7,10 +8,11 @@
     --ai-msg-bg-light: #e4e6eb;
     --input-bg-light: #e4e6eb;
     --border-color-light: rgba(0, 0, 0, 0.1);
-    --msg-text-light: #ffffff;
-    --ai-msg-text-light: #050505;
+    --msg-text-light: #ffffff; /* For user messages */
+    --ai-msg-text-light: #050505; /* For AI messages */
 
 
+    /* --- Dark Theme Colors --- */
     --background-color-dark: #121212;
     --surface-color-dark: #1e1e1e;
     --primary-text-color-dark: #e0e0e0;
@@ -20,12 +22,14 @@
     --input-bg-dark: #2a2a2a;
     --border-color-dark: rgba(255, 255, 255, 0.1);
 
+    /* --- Universal Colors --- */
     --accent-color: #4CAF50;
     --accent-hover-color: #45a049;
     --error-msg-bg: #8c1c1c;
     --text-on-accent: #ffffff;
 }
 
+/* Default to light theme variables */
 :root {
     --bg-color: var(--background-color-light);
     --surface-color: var(--surface-color-light);
@@ -39,6 +43,7 @@
     --ai-msg-text: var(--ai-msg-text-light);
 }
 
+/* Override with dark theme variables when data-theme is 'dark' */
 [data-theme="dark"] {
     --bg-color: var(--background-color-dark);
     --surface-color: var(--surface-color-dark);
@@ -52,6 +57,11 @@
     --ai-msg-text: var(--primary-text-color-dark);
 }
 
+/* --- ALTERAÇÃO 1: Ajuste na base do layout --- */
+html {
+    height: 100%;
+}
+
 body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     background-color: var(--bg-color);
@@ -60,14 +70,15 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    height: 100%; /* Alterado de 100vh para 100% */
+    overflow: hidden; /* Previne rolagem do corpo da página */
     transition: background-color 0.3s, color 0.3s;
 }
 
 .chat-container {
     width: 100%;
     max-width: 800px;
-    height: 90vh;
+    height: 90vh; /* Mantido para desktop */
     background-color: var(--surface-color);
     border-radius: 12px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
@@ -85,12 +96,13 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    flex-shrink: 0; /* Impede que o header encolha */
 }
 
 .header-title {
     flex-grow: 1;
     text-align: center;
-    margin-left: 40px;
+    margin-left: 40px; /* Space for the button */
 }
 
 header h1 { margin: 0; font-size: 1.5rem; }
@@ -108,6 +120,7 @@ header p { margin: 5px 0 0; color: var(--secondary-text); font-size: 0.9rem; }
     justify-content: center;
     color: var(--primary-text);
     transition: background-color 0.2s, border-color 0.2s;
+    flex-shrink: 0; /* Impede que o botão encolha */
 }
 
 #theme-toggle:hover {
@@ -148,7 +161,7 @@ header p { margin: 5px 0 0; color: var(--secondary-text); font-size: 0.9rem; }
 .spinner { width: 20px; height: 20px; border: 3px solid rgba(128, 128, 128, 0.3); border-top-color: var(--accent-color); border-radius: 50%; animation: spin 1s linear infinite; }
 @keyframes spin { to { transform: rotate(360deg); } }
 
-.message-form { display: flex; padding: 20px; border-top: 1px solid var(--border-color); gap: 10px; }
+.message-form { display: flex; padding: 20px; border-top: 1px solid var(--border-color); gap: 10px; flex-shrink: 0; /* Impede que o formulário encolha */ }
 #user-input { flex-grow: 1; padding: 12px; border-radius: 8px; border: 1px solid var(--border-color); background-color: var(--input-bg); color: var(--primary-text); font-size: 1rem; transition: border-color 0.2s; }
 #user-input:focus { outline: none; border-color: var(--accent-color); }
 #send-button { padding: 12px; width: 48px; height: 48px; border-radius: 8px; border: none; background-color: var(--accent-color); color: var(--text-on-accent); font-weight: bold; cursor: pointer; transition: background-color 0.2s; display: flex; justify-content: center; align-items: center; }
@@ -156,11 +169,17 @@ header p { margin: 5px 0 0; color: var(--secondary-text); font-size: 0.9rem; }
 #send-button:hover:not(:disabled) { background-color: var(--accent-hover-color); }
 #send-button:disabled { background-color: #555; cursor: not-allowed; }
 
+/* --- ALTERAÇÃO 2: Ajuste específico para Mobile --- */
 @media (max-width: 768px) {
-    body { height: 100%; }
-    .chat-container { height: 100vh; max-height: 100vh; border-radius: 0; box-shadow: none; }
+    .chat-container {
+        height: 100%; /* Ocupa 100% da altura do body */
+        max-height: 100%;
+        border-radius: 0;
+        box-shadow: none;
+    }
+
     header { padding: 15px; }
-    .header-title { margin-left: 42px; }
+    .header-title { margin-left: 42px; } /* Adjust for smaller button */
     header h1 { font-size: 1.2rem; }
     header p { font-size: 0.8rem; }
     #theme-toggle { width: 38px; height: 38px; }
