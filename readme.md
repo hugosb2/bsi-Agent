@@ -1,4 +1,4 @@
-# Nátaly AI - Agente de Orientação para BSI
+# Lívia AI - Agente de Orientação para BSI
 
 Um chatbot inteligente, baseado no modelo Gemini do Google, especializado em responder perguntas sobre o curso de Bacharelado em Sistemas de Informação do IF Baiano - Campus Itapetinga.
 
@@ -7,7 +7,7 @@ Um chatbot inteligente, baseado no modelo Gemini do Google, especializado em res
 
 ## 📖 Sobre o Projeto
 
-Nátaly AI foi criada para ser uma assistente acadêmica virtual, especialista no curso de Sistemas de Informação. O objetivo é centralizar informações de diversos documentos oficiais (como Projeto Pedagógico do Curso, listas de docentes, horários, etc.) e fornecer respostas rápidas, precisas e em linguagem natural para alunos e interessados no curso.
+Lívia AI foi criada para ser uma assistente acadêmica virtual, especialista no curso de Sistemas de Informação. O objetivo é centralizar informações de diversos documentos oficiais (como Projeto Pedagógico do Curso, listas de docentes, horários, etc.) e fornecer respostas rápidas, precisas e em linguagem natural para alunos e interessados no curso.
 
 Este projeto utiliza uma arquitetura **RAG (Retrieval-Augmented Generation)**, onde as perguntas dos usuários são respondidas com base em um contexto extraído de uma base de conhecimento pré-processada, evitando "alucinações" e garantindo que as respostas sejam fiéis aos documentos originais.
 
@@ -18,7 +18,7 @@ Este projeto utiliza uma arquitetura **RAG (Retrieval-Augmented Generation)**, o
 -   **Interface de Chat:** Uma interface web limpa e responsiva para interação.
 -   **Processamento de Linguagem Natural:** Entende as perguntas dos usuários em português.
 -   **Base de Conhecimento Específica:** Treinada exclusivamente com documentos do curso de BSI do IF Baiano.
--   **Persona Definida:** Responde como "Nátaly Ramos", uma agente de orientação acadêmica com tom de voz acolhedor e profissional.
+-   **Persona Definida:** Responde como "Lívia", uma agente de orientação acadêmica com tom de voz acolhedor e profissional.
 -   **Fluxo de Dados Otimizado:** Utiliza um script para pré-processar os documentos e gerar uma base de conhecimento em JSON, garantindo uma inicialização rápida da aplicação em produção.
 -   **Sistema Anti-Alucinação:** O prompt do modelo é instruído a responder apenas com base no contexto fornecido, aumentando a confiabilidade das respostas.
 

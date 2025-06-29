@@ -118,7 +118,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     const firstAiMessageDiv = document.querySelector('.ai-message .text');
-    if(firstAiMessageDiv.textContent.includes('Olá! Sou Nátaly Ramos')) {
+    if(firstAiMessageDiv.textContent.includes('Olá! Sou Lívia')) {
     }
 
 });
