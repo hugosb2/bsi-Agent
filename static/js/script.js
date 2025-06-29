@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // --- INÍCIO DA LÓGICA DE TROCA DE TEMA ---
     const themeToggle = document.getElementById('theme-toggle');
     const lightIcon = document.getElementById('theme-icon-light');
     const darkIcon = document.getElementById('theme-icon-dark');
@@ -26,15 +25,14 @@ document.addEventListener('DOMContentLoaded', () => {
         const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
         applyTheme(newTheme);
     });
-    // --- FIM DA LÓGICA DE TROCA DE TEMA ---
 
-
-    // --- Código do Chatbot ---
     const form = document.getElementById('message-form');
     const userInput = document.getElementById('user-input');
     const chatBox = document.getElementById('chat-box');
     const sendButton = document.getElementById('send-button');
     const loadingIndicator = document.getElementById('loading');
+    
+    let conversationHistory = [];
 
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
@@ -46,22 +44,30 @@ document.addEventListener('DOMContentLoaded', () => {
         
         toggleFormState(true);
 
+        conversationHistory.push({ role: 'user', parts: [{ text: query }] });
+
         try {
             const response = await fetch('/ask', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ query: query }),
+                body: JSON.stringify({ 
+                    query: query,
+                    history: conversationHistory.slice(0, -1)
+                }),
             });
 
             if (!response.ok) {
                 const errorData = await response.json();
+                conversationHistory.pop(); 
                 throw new Error(errorData.error || `HTTP error! status: ${response.status}`);
             }
 
             const data = await response.json();
             appendMessage(data.response, 'ai');
+            
+            conversationHistory.push({ role: 'model', parts: [{ text: data.response }] });
 
         } catch (error) {
             console.error('Fetch error:', error);
@@ -106,4 +112,13 @@ document.addEventListener('DOMContentLoaded', () => {
         chatBox.appendChild(messageWrapper);
         chatBox.scrollTop = chatBox.scrollHeight;
     }
+    
+    const initialMessage = document.querySelector('.initial-ai-message');
+    if (initialMessage) {
+    }
+
+    const firstAiMessageDiv = document.querySelector('.ai-message .text');
+    if(firstAiMessageDiv.textContent.includes('Olá! Sou Nátaly Ramos')) {
+    }
+
 });

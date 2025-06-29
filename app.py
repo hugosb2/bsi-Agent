@@ -18,6 +18,7 @@ if not API_KEY:
     raise ValueError("A chave da API do Google não foi encontrada.")
 
 pdf_data_cache = None
+system_prompt = None
 
 def load_knowledge_base():
     script_dir = os.path.dirname(os.path.abspath(__file__))
@@ -35,6 +36,19 @@ def load_knowledge_base():
         return None
     except Exception as e:
         print(f"ERRO ao carregar ou processar 'knowledge_base.json': {e}")
+        return None
+
+def load_system_prompt():
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    prompt_path = os.path.join(script_dir, "prompt.md")
+    try:
+        print(f"Carregando prompt de: {prompt_path}")
+        with open(prompt_path, 'r', encoding='utf-8') as f:
+            prompt = f.read()
+        print("Prompt carregado com sucesso.")
+        return prompt
+    except Exception as e:
+        print(f"ERRO ao carregar 'prompt.md': {e}")
         return None
 
 def find_best_chunks(query, pdf_data, top_k=5):
@@ -56,7 +70,7 @@ def find_best_chunks(query, pdf_data, top_k=5):
 
 @app.route("/")
 def index():
-    if pdf_data_cache is None:
+    if pdf_data_cache is None or system_prompt is None:
         return render_template("index.html", error=True)
     return render_template("index.html", error=False)
 
@@ -64,45 +78,46 @@ def index():
 def ask():
     data = request.get_json()
     query = data.get("query", "").strip()
+    history = data.get("history", [])
+
     if not query:
         return jsonify({"error": "A pergunta não pode estar vazia."}), 400
-    if pdf_data_cache is None:
-        return jsonify({"error": "A base de conhecimento não foi carregada."}), 500
+    if pdf_data_cache is None or system_prompt is None:
+        return jsonify({"error": "A base de conhecimento ou o prompt não foram carregados."}), 500
+
     try:
         relevant_chunks = find_best_chunks(query, pdf_data_cache)
-        
         context = "\n\n---\n\n".join([chunk['text'] for chunk in relevant_chunks])
+
+        final_prompt = system_prompt.format(context=context)
+
+        contents = [
+            {"role": "user", "parts": [{"text": final_prompt}]},
+            {"role": "model", "parts": [{"text": "Entendido. Estou pronta para ajudar os alunos do curso de Sistemas de Informação."}]}
+        ]
         
-        prompt = f"""
-# Persona e Objetivo
-Você é Nátaly Ramos, a Agente de Orientação Acadêmica especialista no curso de **Bacharelado em Sistemas de Informação** do IF Baiano - Campus Itapetinga. Sua comunicação deve ser sempre clara, acolhedora e focada unicamente neste curso.
-
-# Regras Essenciais
-1.  **Escopo Definido:** Sua única área de conhecimento é o curso de Sistemas de Informação. Se perguntarem sobre outros cursos ou assuntos gerais do IF Baiano, responda educadamente que sua especialidade é apenas o BSI.
-2.  **Fonte do Conhecimento:** Aja como se a informação fosse seu próprio conhecimento sobre o curso. Sua principal habilidade é sintetizar informações do "Contexto fornecido" em uma resposta única e coesa.
-3.  **Proibição de Citar Fontes:** **NUNCA** mencione a origem da sua informação. Não use expressões como "segundo o documento", "no projeto pedagógico", "de acordo com a fonte", etc. Apresente a informação diretamente como se fosse de seu conhecimento.
-4.  **Regra Antialucinação:** NUNCA invente informações. Sua base de conhecimento é limitada ao "Contexto fornecido". Se a resposta não estiver lá, responda de forma honesta, como: "Não tenho essa informação específica sobre o curso de Sistemas de Informação no momento."
-5.  **Formatação:** Use Markdown (negrito para ênfase, listas, etc.) para tornar a resposta clara e fácil de ler.
-
-# Execução
-Contexto fornecido:\n---\n{context}\n---\n\nPergunta do usuário:\n{query}
-
-Resposta:
-"""
-
+        contents.extend(history)
+        
+        contents.append({"role": "user", "parts": [{"text": query}]})
+        
         url = f"{API_BASE_URL}/{GENERATIVE_MODEL}:generateContent?key={API_KEY}"
         headers = {'Content-Type': 'application/json'}
-        payload = {"contents": [{"parts": [{"text": prompt}]}]}
+        
+        payload = {"contents": contents}
+        
         response = requests.post(url, headers=headers, data=json.dumps(payload))
         response.raise_for_status()
+        
         result = response.json()
         ai_response = result['candidates'][0]['content']['parts'][0]['text']
+        
         return jsonify({"response": ai_response})
     except Exception as e:
         print(f"Erro inesperado: {e}")
         return jsonify({"error": f"Ocorreu um erro inesperado no servidor: {e}"}), 500
 
 pdf_data_cache = load_knowledge_base()
+system_prompt = load_system_prompt()
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5001, debug=True)
